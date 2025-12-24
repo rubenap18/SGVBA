@@ -2,6 +2,7 @@
 import sys
 from mysql.connector import Error
 
+'''
 #imports de los DAO
 from dao.db import Connection
 from dao.ruta_dao import RutaDAO
@@ -26,8 +27,13 @@ from utilidades.app_contenedor import AppContenedor
 
 #imports para testeo
 from objetos.ruta import Ruta
+'''
 
+#importing daos
+from repositories.connection import Connection
 
+#importing view
+from view.main_view import MainView
 
 def main():
     print('Iniciando Transportes Cuervo Negro')
@@ -41,7 +47,18 @@ def main():
         print(f"ERROR IMPORTANTE: No se pudo iniciar el programa. {e}")
         Connection.closeConnection() #cerrando por si acaso algo quedo abierto en la conexion
         return #terminando la ejecucion del programa
+    
+    
+    # iniciando vista
+    vista_principal = MainView()
+    vista_principal.run()
 
+    #cerrando conexion
+    if Connection.closeConnection():
+        print('Cerrando conexion con la BD.')
+    sys.exit(0)
+
+'''
     #Iniciando dao's
     ruta_dao = RutaDAO()
     corrida_dao = CorridaDAO()
@@ -66,14 +83,7 @@ def main():
     app = QApplication(sys.argv)
     ventana = MainUI(app_manager)
     ventana.show()
-    
-    exit_code = app.exec()
-
-    #cerrando conexion
-    Connection.closeConnection()
-
-    sys.exit(exit_code)
-
+'''
 
 if __name__ == '__main__':
     main()
